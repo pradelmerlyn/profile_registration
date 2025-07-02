@@ -9,13 +9,10 @@ class ProfileDetailsScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          const SizedBox(height: 60), // To make room for avatar
-
-          _buildProfileHeader(),
-          const SizedBox(height: 60), // To make room for avatar
+          _buildProfileHeader(context),
+          const SizedBox(height: 60),
           _profileInfo(),
           _buildAboutMe(),
-          _buildButton(context),
         ],
       ),
     );
@@ -50,14 +47,13 @@ Widget _profileInfo() {
   );
 }
 
-Widget _buildProfileHeader() {
+Widget _buildProfileHeader(BuildContext context) {
   return Stack(
     clipBehavior: Clip.none,
-    alignment: Alignment.center,
     children: [
       // Header background
       Container(
-        height: 320,
+        height: 300,
         width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -66,14 +62,22 @@ Widget _buildProfileHeader() {
           ),
         ),
         child: Container(
-          color: const Color.fromARGB(255, 251, 113, 95)
-              .withOpacity(0.5), // purple overlay
+          color: const Color.fromARGB(255, 251, 113, 95).withOpacity(0.5),
         ),
+      ),
+
+      // Close button in top-right
+      Positioned(
+        top: 40,
+        left: 16,
+        child: _buildCloseButton(context),
       ),
 
       // Profile image
       const Positioned(
         bottom: -50,
+        left: 0,
+        right: 0,
         child: CircleAvatar(
           radius: 55,
           backgroundColor: Color.fromARGB(255, 251, 113, 95),
@@ -90,21 +94,8 @@ Widget _buildProfileHeader() {
 Widget _buildAboutMe() {
   return Container(
     padding: const EdgeInsets.all(16),
-    margin: const EdgeInsets.only(top: 20),
-    // decoration: BoxDecoration(
-    //   color: Colors.white,
-    //   borderRadius: BorderRadius.circular(12),
-    //   boxShadow: [
-    //     BoxShadow(
-    //       color: Colors.black.withOpacity(0.1),
-    //       blurRadius: 10,
-    //       offset: const Offset(0, 5),
-    //     ),
-    //   ],
-    // ),
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      
       children: [
         Text(
           'About Me',
@@ -115,7 +106,9 @@ Widget _buildAboutMe() {
         ),
         SizedBox(height: 8),
         Text(
-          'Front-end developer with 12 years of experience building responsive and user-friendly web interfaces.\nCurrently expanding my skill set by diving into Flutter development to create seamless cross-platform mobile applications.',
+          'Front-end developer with 12 years of experience building responsive and user-friendly web interfaces.'
+          '\nCurrently expanding my skill set by diving into Flutter development to create seamless cross-platform mobile applications.',
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14),
         ),
       ],
@@ -123,17 +116,15 @@ Widget _buildAboutMe() {
   );
 }
 
-Widget _buildButton(context) {
-  return ElevatedButton(
+Widget _buildCloseButton(context) {
+  return IconButton(
+    icon: const Icon(
+      Icons.arrow_back_ios,
+      color: Colors.white,
+    ),
+    color: Colors.black87,
     onPressed: () {
       Navigator.pop(context);
     },
-    style: ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(Colors.red),
-    ),
-    child: const Text(
-      'Back',
-      style: TextStyle(fontSize: 18, color: Colors.white),
-    ),
   );
 }
