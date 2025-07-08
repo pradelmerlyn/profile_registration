@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1_activity/screens/profile_screen/profile_screen.dart';
+import 'package:sprint1_activity/core/custom_theme.dart';
+import 'package:sprint1_activity/screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: CustomAppTheme.lightTheme,
       home: const HomePage(),
     );
   }
@@ -28,7 +26,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
       ),
-      body: const ProfileScreen(),
+      body: HomeScreen(),
     );
   }
 }
