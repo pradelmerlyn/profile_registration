@@ -24,33 +24,27 @@ class _LandingScreenState extends State<LandingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Green header
-          Container(
-            color: const Color.fromRGBO(70, 150, 255, 1),
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.check_circle_outline,
-                  size: 100,
-                  color: Colors.white,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'SUCCESS',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: _themeData!.colorScheme.onPrimary,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-              ],
-            ),
+          const Icon(
+            Icons.check_circle_outline,
+            size: 100,
+            color: Colors.green,
           ),
+          const SizedBox(height: 16),
+          const Text(
+            'SUCCESS',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
+              letterSpacing: 1.5,
+            
+            ),
+            textAlign: TextAlign.center,
+          ),
+          
 
           const SizedBox(height: 32),
 
@@ -69,22 +63,24 @@ class _LandingScreenState extends State<LandingScreen> {
 
           const SizedBox(height: 40),
 
-          CustomRoundedButton(
-            label: 'Continue',
-            useFullWidth: false,
-            width: 200,
-            onPressed: () {
-              SystemChannels.textInput.invokeMethod('TextInput.hide');
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ),
-              );
-            },
-            backgroundColor: _themeData!.colorScheme.primary, // blue background
-            foregroundColor: _themeData!.colorScheme.onPrimary, // white text
-          ),
+          Center(
+            child: CustomRoundedButton(
+              label: 'Continue',
+              width: 150, // this controls the size
+              useFullWidth: false, // or just explicitly turn off full width
+              onPressed: () {
+                SystemChannels.textInput.invokeMethod('TextInput.hide');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                );
+              },
+              backgroundColor: _themeData!.colorScheme.primary,
+              foregroundColor: _themeData!.colorScheme.onPrimary,
+            ),
+          )
         ],
       ),
     );
