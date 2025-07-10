@@ -36,9 +36,11 @@ class CustomAppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: const Color.fromRGBO(70, 150, 255, 1),
         primary: const Color.fromRGBO(70, 150, 255, 1), // for background
-        onPrimary: Colors.white, // for text/icons on red
-        secondary:const Color.fromRGBO(238, 238, 238, 1),
+        onPrimary: Colors.white, // for text/icons
+        secondary:const Color.fromRGBO(235, 235, 235, 1),
+        onSecondary: const Color.fromARGB(255, 100, 99, 99),
         tertiary: Colors.black,
+        onError: Colors.red,
         brightness: Brightness.light,
       ),
       textTheme: TextTheme(
@@ -54,9 +56,21 @@ class CustomAppTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        titleSmall: GoogleFonts.montserrat(
+        titleSmall: GoogleFonts.inter(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        labelLarge: GoogleFonts.inter(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        labelMedium: GoogleFonts.inter(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        labelSmall: GoogleFonts.inter(
           fontSize: 14,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
         bodyMedium: GoogleFonts.poppins(),
         displaySmall: GoogleFonts.inter(),

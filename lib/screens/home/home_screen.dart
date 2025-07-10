@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _themeData!.colorScheme.onPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -39,8 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    
                     Text(
-                      "Hey there!",
+                      "Hey Wizard!",
                       style: _themeData!.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: _themeData!.colorScheme.primary,
