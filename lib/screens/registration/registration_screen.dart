@@ -44,6 +44,11 @@ class _RegistrationScreen extends State<RegistrationScreen>
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
@@ -210,14 +215,30 @@ class _RegistrationScreen extends State<RegistrationScreen>
                   onDateChanged: (pickedDate) {
                     final today = DateTime.now();
                     int age = today.year - pickedDate.year;
+                    
                     if (today.month < pickedDate.month ||
                         (today.month == pickedDate.month &&
                             today.day < pickedDate.day)) {
                       age--;
                     }
+                    if (age > 99) {
+                      debugPrint('Invalid Date');
+                      _birthdateController.text = '';
+                      _ageController.text = '';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Age cannot be greater than 99.'),
+                          backgroundColor: Colors.red,
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+
                     _ageController.text = age.toString();
                   },
                   validator: (value) {
+                    debugPrint('birthday : $value');
                     if (value == null || value.isEmpty) {
                       return 'Please enter your birthday';
                     }
@@ -289,7 +310,10 @@ class _RegistrationScreen extends State<RegistrationScreen>
         Expanded(
           child: CustomRoundedButton(
             label: 'Back',
-            onPressed: () => _tabController.animateTo(0),
+            onPressed: () {
+              SystemChannels.textInput.invokeMethod('TextInput.hide');
+              _tabController.animateTo(0);
+            },
             backgroundColor: _themeData!.colorScheme.onSecondary,
             foregroundColor: _themeData!.colorScheme.onPrimary,
           ),
@@ -303,12 +327,12 @@ class _RegistrationScreen extends State<RegistrationScreen>
 
               if (_contactInfoFormKey.currentState!.validate()) {
                 setState(() {
-                   _registration = _registration!
+                  _registration = _registration!
                       .copyWith(email: _emailAddressController.text);
                 });
-               
 
-                debugPrint('📕 Registration Form data: ${_registration!.toJson()}');
+                debugPrint(
+                    '📕 Registration Form data: ${_registration!.toJson()}');
                 _tabController.animateTo(2);
               }
             },
@@ -413,7 +437,10 @@ class _RegistrationScreen extends State<RegistrationScreen>
         Expanded(
           child: CustomRoundedButton(
             label: 'Back',
-            onPressed: () => _tabController.animateTo(1),
+            onPressed: () {
+              SystemChannels.textInput.invokeMethod('TextInput.hide');
+              _tabController.animateTo(1);
+            },
             backgroundColor: Colors.grey,
             foregroundColor: Colors.white,
           ),
@@ -569,6 +596,7 @@ class _RegistrationScreen extends State<RegistrationScreen>
 // Reusable widgets
 
   Widget _pagination() {
+    debugPrint('🍅🍅🍅 index ${_tabController.index}');
     return Center(
       child: Text(
         "${_tabController.index + 1} out of ${_tabController.length}",
