@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1_activity/core/custom_theme.dart';
-import 'package:sprint1_activity/screens/home/home_screen.dart';
+import 'core/custom_theme.dart';
+import 'screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());

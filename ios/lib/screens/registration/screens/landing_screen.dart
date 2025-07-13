@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sprint1_activity/screens/home/home_screen.dart';
-import 'package:sprint1_activity/widgets/custom_rounded_button.dart';
+import '../../home/home_screen.dart';
+import '../../../widgets/custom_rounded_button.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});

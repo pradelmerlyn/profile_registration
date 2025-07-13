@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sprint1_activity/screens/profile/profile_details_screen.dart';
-import 'package:sprint1_activity/screens/registration/registration_screen.dart';
-import 'package:sprint1_activity/widgets/custom_rounded_button.dart';
+import '../profile/profile_details_screen.dart';
+import '../registration/screens/registration_screen.dart';
+import '../../widgets/custom_rounded_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
