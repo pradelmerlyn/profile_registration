@@ -1,42 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../model/registration_model.dart';
+
+import '../../../../widgets/custom_datepickerfield.dart';
+import '../../../../widgets/custom_textformfields.dart';
 import '../widgets/form_step_widget.dart';
 import '../widgets/page_header_widget.dart';
-import '../../../widgets/custom_datepickerfield.dart';
-import '../../../widgets/custom_rounded_button.dart';
-import '../../../widgets/custom_textformfields.dart';
 
 class PersonalInfoView extends StatefulWidget {
   const PersonalInfoView(
-      {super.key,
+    {
+      super.key,
       required this.tabController,
-      required this.registration,
-      required this.onChanged, 
       required this.firstNameController,
       required this.lastNameController, 
       required this.bdayController, 
       required this.ageController, 
-      required this.bioController
+      required this.bioController, 
+      required this.formKey
     });
 
+  final GlobalKey<FormState> formKey;
   final TabController tabController;
-  final RegistrationModel registration;
-  final ValueChanged<RegistrationModel> onChanged;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController bdayController;
   final TextEditingController ageController;
   final TextEditingController bioController;
+
+
   @override
   State<StatefulWidget> createState() => _PersonalInfoView();
 }
 
 class _PersonalInfoView extends State<PersonalInfoView>
     with TickerProviderStateMixin {
-  final _personalInfoFormKey = GlobalKey<FormState>();
-
-
 
   @override
   void initState() {
@@ -44,26 +41,11 @@ class _PersonalInfoView extends State<PersonalInfoView>
     super.initState();
   }
 
-  void _next() {
-    if (_personalInfoFormKey.currentState!.validate()) {
-      final updated = widget.registration.copyWith(
-        firstName: widget.firstNameController.text,
-        lastName: widget.lastNameController.text,
-        bday: widget.bdayController.text,
-        age: int.tryParse(widget.ageController.text) ?? 0,
-        bio: widget.bioController.text,
-      );
-      widget.onChanged(updated);
-      widget.tabController.animateTo(1);
-      
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FormStepWidget(
       content: Form(
-        key: _personalInfoFormKey,
+        key: widget.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -111,16 +93,6 @@ class _PersonalInfoView extends State<PersonalInfoView>
           ],
         ),
       ),
-      buttons: [
-        Expanded(
-          child: CustomRoundedButton(
-            label: 'Next',
-            onPressed: _next,
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-          ),
-        ),
-      ],
     );
   }
 }

@@ -1,20 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../../../model/registration_model.dart';
-import '../../../widgets/custom_loading_animation.dart';
-import '../../../widgets/custom_rounded_button.dart';
-import '../screens/landing_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint1_activity/features/domain/entities/registration/user_entity.dart';
+import 'package:sprint1_activity/features/presentation/home/screens/pages/home_screen.dart';
+import 'package:sprint1_activity/features/presentation/registration/bloc/registration/registration_bloc.dart';
 import '../widgets/form_step_widget.dart';
 import '../widgets/page_header_widget.dart';
 
 class ReviewInfoView extends StatefulWidget {
-  final RegistrationModel registration;
-
-  const ReviewInfoView({
-    super.key, 
-    required this.registration, 
-    required this.tabController
-  });
+  const ReviewInfoView({super.key, required this.tabController});
 
   final TabController tabController;
 
@@ -26,72 +20,46 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return FormStepWidget(
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return BlocListener<RegistrationBloc, RegistrationState>(
+      listener: (context, state) {
+        debugPrint('isSuccesful: ${state.isSubmissionSuccess}');
+        if (state.isSubmissionSuccess) {
+          debugPrint('✅ Submission successful!');
+          showDialog(
+            context: context,
+            builder: (_) => _ShowDialog(),
+          );
+        }
+      },
+      child: FormStepWidget(
+        content:
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const SizedBox(height: 10),
           const PageHeaderWidget(
             title: 'Review Information',
             description: 'Please review your information before you continue.',
           ),
-          _DisplayFormData(registration: widget.registration),
-        ]
+          _DisplayFormData(
+              userData: context.read<RegistrationBloc>().state.userEntity)
+        ]),
       ),
-    
-      buttons: [
-        Expanded(
-          child: CustomRoundedButton(
-            label: 'Back',
-            onPressed: () {
-              SystemChannels.textInput.invokeMethod('TextInput.hide');
-              widget.tabController.animateTo(1);
-            },
-            backgroundColor: Colors.grey,
-            foregroundColor: Colors.white,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: CustomRoundedButton(
-            label: 'Continue',
-            onPressed: () {
-              showLoadingAnimation(
-                context: context,
-                task: Future.delayed(const Duration(seconds: 2)),
-              ).then((_) {
-                if (!mounted) return; // make sure context is still valid
-                debugPrint(
-                  '📄 Updated Registration (ReviewInfo): ${widget.registration.toJson()}',
-                );
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LandingScreen(),
-                  ),
-                );
-              });
-            },
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-          ),
-        )
-      ],
     );
   }
 }
 
 class _DisplayFormData extends StatelessWidget {
-  final RegistrationModel registration;
+  final UserEntity userData;
 
-  const _DisplayFormData({required this.registration});
+  const _DisplayFormData({required this.userData});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final data = registration.toJson();
+    final data = userData.toJson();
 
+    if (kDebugMode) {
+      debugPrint('DATA 💘💘 : $data');
+    }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -153,5 +121,46 @@ class _DisplayFormData extends StatelessWidget {
         .split(' ')
         .map((word) => '${word[0].toUpperCase()}${word.substring(1)}')
         .join(' ');
+  }
+}
+
+class _ShowDialog extends StatefulWidget {
+  @override
+  State<_ShowDialog> createState() => _ShowDialogState();
+}
+
+class _ShowDialogState extends State<_ShowDialog> {
+  ThemeData? _themeData;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _themeData = Theme.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Succes!'),
+      content: const Text(
+        'Congratulations, your account has been successfully created.',
+      ),
+      actions: <Widget>[
+        BlocBuilder<RegistrationBloc, RegistrationState>(
+          builder: (context, state) {
+            return TextButton(
+              style: TextButton.styleFrom(
+                  textStyle: _themeData!.textTheme.labelLarge),
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.read<RegistrationBloc>().add(ResetSubmissionSuccess());
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
+              },
+            );
+          },
+        ),
+      ],
+    );
   }
 }

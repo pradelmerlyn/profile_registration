@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../home/home_screen.dart';
-import '../../../widgets/custom_rounded_button.dart';
+import '../../../home/screens/pages/home_screen.dart';
+import '../../../../widgets/custom_rounded_button.dart';
 
-class LandingScreen extends StatefulWidget {
-  const LandingScreen({super.key});
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
 
   @override
-  State<LandingScreen> createState() => _LandingScreenState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _LandingPageState extends State<LandingPage> {
   ThemeData? _themeData;
 
   @override

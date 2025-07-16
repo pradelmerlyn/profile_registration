@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class FormStepWidget extends StatelessWidget {
   final Widget content;
-  final List<Widget> buttons;
+  final List<Widget>? buttons;
 
   const FormStepWidget({
     super.key, 
     required this.content, 
-    required this.buttons
+    this.buttons
   });
 
   @override
@@ -23,12 +23,13 @@ class FormStepWidget extends StatelessWidget {
           ),
 
           // Fixed bottom buttons
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: buttons,
-            ),
-          )
+          if (buttons != null && buttons!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: buttons!,
+              ),
+            )
         ],
       ),
     );
