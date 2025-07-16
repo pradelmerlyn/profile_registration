@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../profile/profile_details_screen.dart';
-import '../registration/screens/registration_screen.dart';
-import '../../widgets/custom_rounded_button.dart';
+import '../../../profile/profile_details_screen.dart';
+import '../../../registration/screens/pages/registration_page.dart';
+import '../../../../widgets/custom_rounded_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RegistrationScreen()));
+                              builder: (context) => const RegistrationPage()));
                     },
                     backgroundColor: _themeData!.colorScheme.primary, // red
                     foregroundColor:
