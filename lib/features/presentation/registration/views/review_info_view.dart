@@ -11,23 +11,56 @@ class ReviewInfoView extends StatefulWidget {
   const ReviewInfoView({super.key, required this.tabController});
 
   final TabController tabController;
-
+ 
   @override
   State<ReviewInfoView> createState() => _ReviewInfoViewState();
 }
 
 class _ReviewInfoViewState extends State<ReviewInfoView>
     with TickerProviderStateMixin {
+
+  ThemeData? _themeData;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _themeData = Theme.of(context);
+  }
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         debugPrint('isSuccesful: ${state.isSubmissionSuccess}');
         if (state.isSubmissionSuccess) {
           debugPrint('✅ Submission successful!');
-          showDialog(
+           showDialog(
             context: context,
-            builder: (_) => _ShowDialog(),
+            barrierDismissible: false,
+            builder: (_) => AlertDialog(
+              title: const Text('Success!'),
+              content: const Text(
+                'Congratulations, your account has been successfully created.',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: _themeData!.textTheme.labelLarge,
+                  ),
+                  child: const Text('OK'),
+                  onPressed: () {
+                    context.read<RegistrationBloc>().add(ResetSubmissionSuccess());
+                    Navigator.of(context).pop(); // close dialog
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const HomeScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           );
         }
       },
@@ -124,43 +157,3 @@ class _DisplayFormData extends StatelessWidget {
   }
 }
 
-class _ShowDialog extends StatefulWidget {
-  @override
-  State<_ShowDialog> createState() => _ShowDialogState();
-}
-
-class _ShowDialogState extends State<_ShowDialog> {
-  ThemeData? _themeData;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _themeData = Theme.of(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Succes!'),
-      content: const Text(
-        'Congratulations, your account has been successfully created.',
-      ),
-      actions: <Widget>[
-        BlocBuilder<RegistrationBloc, RegistrationState>(
-          builder: (context, state) {
-            return TextButton(
-              style: TextButton.styleFrom(
-                  textStyle: _themeData!.textTheme.labelLarge),
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                context.read<RegistrationBloc>().add(ResetSubmissionSuccess());
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
-}

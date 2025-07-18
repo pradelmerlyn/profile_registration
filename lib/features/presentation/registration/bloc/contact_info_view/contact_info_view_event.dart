@@ -10,3 +10,13 @@ abstract class ContactInfoViewEvent extends Equatable {
 class ShowPasswordEvent extends ContactInfoViewEvent {}
 
 class ShowConfirmPasswordEvent extends ContactInfoViewEvent {}
+
+class ValidateEmailEvent extends ContactInfoViewEvent {
+  final String value;
+  final String errMsg;
+
+  const ValidateEmailEvent({
+    required this.value,
+    required this.errMsg
+  });
+}

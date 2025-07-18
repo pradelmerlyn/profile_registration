@@ -13,6 +13,7 @@ class ContactInfoViewBloc
   ContactInfoViewBloc() : super(ContactInfoViewInitial()) {
     on<ShowPasswordEvent>(onShowPassword);
     on<ShowConfirmPasswordEvent>(onShowConfirmPassword);
+    on<ValidateEmailEvent>(onValidateEmail);
   }
 
   void onShowPassword(
@@ -42,5 +43,48 @@ class ContactInfoViewBloc
         stackTrace: stackTrace,
       );
     }
+  }
+
+  void onValidateEmail(
+      ValidateEmailEvent event, Emitter<ContactInfoViewState> emit) async {
+    String? error;
+
+    if (event.value.isEmpty) {
+      error = 'Please enter your email';
+    } else {
+      final emailRegex = RegExp(
+        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      );
+      if (!emailRegex.hasMatch(event.value.trim())) {
+        error = event.errMsg;
+      }
+    }
+
+    emit(state.copyWith(
+      emailValue: event.value,
+      emailError: error ?? '',
+    ));
+  }
+
+  // PASSWORD VALIDATION 
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a password';
+    }
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value, passwordCtrl) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != passwordCtrl) {
+      return 'Passwords do not match';
+    }
+    return null;
   }
 }
