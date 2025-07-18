@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1_activity/features/presentation/registration/bloc/contact_info_view/contact_info_view_bloc.dart';
 
-import '../../../../widgets/custom_textformfields.dart';
+import '../../../widgets/custom_textformfields.dart';
 import '../widgets/form_step_widget.dart';
 import '../widgets/page_header_widget.dart';
 
@@ -55,17 +55,12 @@ class _ContactInfoView extends State<ContactInfoView>
               label: 'Password',
               controller: widget.passwordController,
               formKey: widget.formKey,
-              // onPasswordChanged: () {
-              //   setState(
-              //       () {}); // triggers rebuild so ConfirmPasswordField sees updated password
-              // },
             ),
             _ConfirmPasswordField(
-              label: 'Confirm Password',
-              controller: widget.confirmPasswordController,
-              formKey: widget.formKey,
-              passwordController: widget.passwordController
-            ),
+                label: 'Confirm Password',
+                controller: widget.confirmPasswordController,
+                formKey: widget.formKey,
+                passwordController: widget.passwordController),
           ],
         ),
       ),
@@ -73,7 +68,7 @@ class _ContactInfoView extends State<ContactInfoView>
   }
 }
 
-class _EmailFormField extends StatelessWidget {
+class _EmailFormField extends StatefulWidget {
   const _EmailFormField({
     required this.label,
     required this.controller,
@@ -81,26 +76,47 @@ class _EmailFormField extends StatelessWidget {
 
   final TextEditingController controller;
   final String label;
+
+  @override
+  State<_EmailFormField> createState() => _EmailFormFieldState();
+}
+
+class _EmailFormFieldState extends State<_EmailFormField> {
+
+  ContactInfoViewBloc? _bloc;
+
+  @override
+  void initState() {
+    _bloc = context.read<ContactInfoViewBloc>();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: CustomTextFormField(
-        label: label,
-        controller: controller,
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your email';
-          }
-          // Email pattern validation
-          final emailRegex = RegExp(
-            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      child: BlocBuilder<ContactInfoViewBloc, ContactInfoViewState>(
+        buildWhen: (previous, current) =>
+            previous.emailError != current.emailError,
+        builder: (context, state) {
+          return CustomTextFormField(
+            label: widget.label,
+            controller: widget.controller,
+            keyboardType: TextInputType.emailAddress,
+            onChanged: (value) {
+              _bloc!.add(ValidateEmailEvent(
+                  value: value, errMsg: 'Please enter valid email address'));
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              if (state.emailError.isNotEmpty) {
+                return state.emailError; // return the error set in Bloc
+              }
+              return null;
+            },
           );
-          if (!emailRegex.hasMatch(value)) {
-            return 'Please enter a valid email';
-          }
-          return null;
         },
       ),
     );
@@ -125,6 +141,14 @@ class _PasswordFormField extends StatefulWidget {
 }
 
 class _PasswordFormFieldState extends State<_PasswordFormField> {
+  ContactInfoViewBloc? _bloc;
+
+  @override
+  void initState() {
+    _bloc = context.read<ContactInfoViewBloc>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -143,7 +167,7 @@ class _PasswordFormFieldState extends State<_PasswordFormField> {
                 showPassword ? Icons.visibility_off : Icons.visibility,
               ),
               onPressed: () {
-                context.read<ContactInfoViewBloc>().add(ShowPasswordEvent());
+                _bloc!.add(ShowPasswordEvent());
               },
             ),
             onChanged: (value) {
@@ -152,21 +176,11 @@ class _PasswordFormFieldState extends State<_PasswordFormField> {
               }
               // widget.onPasswordChanged();
             },
-            validator: _validatePassword,
+            validator: (value) => _bloc!.validatePassword(value),
           );
         },
       ),
     );
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a password';
-    }
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
-    return null;
   }
 }
 
@@ -188,15 +202,22 @@ class _ConfirmPasswordField extends StatefulWidget {
 }
 
 class _ConfirmPasswordFieldState extends State<_ConfirmPasswordField> {
+
+  ContactInfoViewBloc? _bloc;
+
+  @override
+  void initState() {
+    _bloc = context.read<ContactInfoViewBloc>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<ContactInfoViewBloc, ContactInfoViewState>(
-
         buildWhen: (previous, current) =>
             previous.obscureConfirmPassword != current.obscureConfirmPassword,
-
         builder: (context, state) {
           bool showConfirmPassword = state.obscureConfirmPassword;
           return CustomTextFormField(
@@ -208,9 +229,7 @@ class _ConfirmPasswordFieldState extends State<_ConfirmPasswordField> {
                 showConfirmPassword ? Icons.visibility_off : Icons.visibility,
               ),
               onPressed: () {
-                context
-                    .read<ContactInfoViewBloc>()
-                    .add(ShowConfirmPasswordEvent());
+                _bloc!.add(ShowConfirmPasswordEvent());
               },
             ),
             onChanged: (value) {
@@ -218,20 +237,12 @@ class _ConfirmPasswordFieldState extends State<_ConfirmPasswordField> {
                 widget.formKey.currentState!.validate();
               }
             },
-            validator: (value) => _validateConfirmPassword(value),
+            validator: (value) => _bloc!.validateConfirmPassword(value, widget.passwordController.text),
           );
         },
       ),
     );
   }
 
-  String? _validateConfirmPassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
-    }
-    if (value != widget.passwordController.text) {
-      return 'Passwords do not match';
-    }
-    return null;
-  }
+  
 }

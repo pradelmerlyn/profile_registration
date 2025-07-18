@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint1_activity/features/presentation/registration/bloc/registration/registration_bloc.dart';
 import '../../../profile/profile_details_screen.dart';
-import '../../../registration/screens/pages/registration_page.dart';
+import '../../../registration/screens/registration_screen.dart';
 import '../../../../widgets/custom_rounded_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    
                     Text(
                       "Hey Wizard!",
                       style: _themeData!.textTheme.headlineMedium?.copyWith(
@@ -66,7 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Center(
                   child: Image.asset(
                     'assets/images/logo.png',
@@ -89,7 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RegistrationPage()));
+                              builder: (context) => BlocProvider(
+                                    create: (context) => RegistrationBloc(),
+                                    child: const RegistrationScreen(),
+                                  )));
                     },
                     backgroundColor: _themeData!.colorScheme.primary, // red
                     foregroundColor:

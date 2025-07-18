@@ -13,7 +13,9 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
   final ValueChanged<String>? onChanged;
+  final String? errorText;
   final List<TextInputFormatter>? inputFormatters;
+  final bool enableInteractiveSelection;
 
   const CustomTextFormField({
     super.key,
@@ -28,12 +30,13 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.onChanged,
+    this.errorText,
     this.inputFormatters,
+    this.enableInteractiveSelection = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    
     final themeData = Theme.of(context);
     final secondaryColor = themeData.colorScheme.secondary;
 
@@ -50,6 +53,7 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           maxLines: maxLines,
           keyboardType: keyboardType,
+          enableInteractiveSelection: enableInteractiveSelection,
           textCapitalization: textCapitalization,
           validator: validator,
           readOnly: readOnly,
@@ -75,13 +79,16 @@ class CustomTextFormField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: themeData.colorScheme.onError, width: 2),
+              borderSide:
+                  BorderSide(color: themeData.colorScheme.error, width: 2),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: themeData.colorScheme.onError, width: 2),
+              borderSide:
+                  BorderSide(color: themeData.colorScheme.error, width: 2),
             ),
             suffixIcon: suffixIcon,
+            errorText: errorText, // optional: use this if validating externally
           ),
         ),
       ],

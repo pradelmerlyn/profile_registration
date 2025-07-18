@@ -15,6 +15,7 @@ class UpdateUserEvent extends RegistrationEvent {
   List<Object> get props => [];
 }
 
+
 class NextStepEvent extends RegistrationEvent {
   @override
   List<Object> get props => [];
