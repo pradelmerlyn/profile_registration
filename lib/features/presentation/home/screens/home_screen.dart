@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1_activity/features/presentation/registration/bloc/registration/registration_bloc.dart';
-import '../../../profile/profile_details_screen.dart';
-import '../../../registration/screens/registration_screen.dart';
-import '../../../../widgets/custom_rounded_button.dart';
+import '../../profile/profile_details_screen.dart';
+import '../../registration/screens/registration_screen.dart';
+import '../../../widgets/custom_rounded_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

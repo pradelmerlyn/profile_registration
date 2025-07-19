@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1_activity/features/presentation/registration/bloc/contact_info_view/contact_info_view_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/personal_info_view/bloc/personal_info_view_bloc.dart';
+import 'package:sprint1_activity/features/presentation/registration/bloc/personal_info_view/personal_info_view_bloc.dart';
 import 'package:sprint1_activity/features/presentation/registration/bloc/registration/registration_bloc.dart';
 import 'package:sprint1_activity/features/presentation/registration/widgets/pagination_widget.dart';
 import 'package:sprint1_activity/features/widgets/custom_rounded_button.dart';
@@ -22,7 +22,6 @@ class _RegistrationScreen extends State<RegistrationScreen>
     with TickerProviderStateMixin {
   ThemeData? _themeData;
   late final TabController _tabController;
-  //RegistrationBloc? _bloc;
 
   final GlobalKey<FormState> personalInfoFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> contactInfoFormKey = GlobalKey<FormState>();
@@ -48,7 +47,6 @@ class _RegistrationScreen extends State<RegistrationScreen>
         setState(() {});
       }
     });
-
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.initState();
   }
@@ -132,7 +130,7 @@ class _RegistrationScreen extends State<RegistrationScreen>
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 40),
-                  child: _ButtonDisplay( 
+                  child: _ButtonDisplay(
                     tabController: _tabController,
                     personalInfoFormKey: personalInfoFormKey,
                     contactInfoFormKey: contactInfoFormKey,
@@ -182,11 +180,12 @@ class _ButtonDisplay extends StatelessWidget {
       builder: (context, state) {
         final currentStep = state.currentStep;
 
-        debugPrint('🎛️ tabconroller: ${tabController.index}');
-        debugPrint('🎛️ currentStep:  $currentStep');
-        if (tabController.index != currentStep - 1) {
-          WidgetsBinding.instance.addPostFrameCallback(
-              (_) => tabController.animateTo(currentStep - 1));
+        // debugPrint('🎛️ tabconroller: ${tabController.index}');
+        // debugPrint('🎛️ currentStep:  $currentStep');
+       if (tabController.index != currentStep - 1) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            tabController.animateTo(currentStep - 1);
+          });
         }
 
         switch (currentStep) {

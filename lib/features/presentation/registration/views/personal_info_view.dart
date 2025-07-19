@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/personal_info_view/bloc/personal_info_view_bloc.dart';
+import 'package:sprint1_activity/features/presentation/registration/bloc/personal_info_view/personal_info_view_bloc.dart';
 import 'package:sprint1_activity/features/widgets/custom_datepickerfield.dart';
 import 'package:sprint1_activity/features/widgets/custom_textformfields.dart';
 
@@ -38,13 +38,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   @override
   void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     _bloc ??= context.read<PersonalInfoViewBloc>();
+    super.initState();
   }
 
   @override
@@ -140,10 +135,6 @@ class _BirthdayField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<PersonalInfoViewBloc, PersonalInfoViewState>(
-      listenWhen: (previous, current) =>
-          previous.birthday != current.birthday ||
-          previous.age != current.age ||
-          previous.errorId != current.errorId,
       listener: (context, state) {
         if (!context.mounted) return;
 
