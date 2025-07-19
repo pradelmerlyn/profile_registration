@@ -154,8 +154,6 @@ class _PasswordFormFieldState extends State<_PasswordFormField> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<ContactInfoViewBloc, ContactInfoViewState>(
-        buildWhen: (previous, current) =>
-            previous.obscurePassword != current.obscurePassword,
         builder: (context, state) {
           bool showPassword = state.obscurePassword;
           return CustomTextFormField(
@@ -216,8 +214,6 @@ class _ConfirmPasswordFieldState extends State<_ConfirmPasswordField> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<ContactInfoViewBloc, ContactInfoViewState>(
-        buildWhen: (previous, current) =>
-            previous.obscureConfirmPassword != current.obscureConfirmPassword,
         builder: (context, state) {
           bool showConfirmPassword = state.obscureConfirmPassword;
           return CustomTextFormField(

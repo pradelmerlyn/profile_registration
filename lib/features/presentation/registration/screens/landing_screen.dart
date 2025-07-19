@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../home/screens/pages/home_screen.dart';
+import '../../home/screens/home_screen.dart';
 import '../../../widgets/custom_rounded_button.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -66,8 +66,8 @@ class _LandingScreenState extends State<LandingScreen> {
           Center(
             child: CustomRoundedButton(
               label: 'Continue',
-              width: 150, // this controls the size
-              useFullWidth: false, // or just explicitly turn off full width
+              width: 150, 
+              useFullWidth: false, 
               onPressed: () {
                 SystemChannels.textInput.invokeMethod('TextInput.hide');
                 Navigator.push(

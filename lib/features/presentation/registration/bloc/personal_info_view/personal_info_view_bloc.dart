@@ -23,7 +23,6 @@ class PersonalInfoViewBloc
     }
 
     if (age > 99) {
-      // always emit a new state, even if same error message
       emit(state.copyWith(
         birthday: '',
         age: 0,
@@ -42,7 +41,6 @@ class PersonalInfoViewBloc
     }
   }
 
-  // validate TitleCase
   String? validateTitleCase({
     String? value,
     String? errMsg,
