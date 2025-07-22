@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:sprint1_activity/features/domain/entities/registration/user_entity.dart';
+import 'package:sprint1_activity/domain/entities/registration/user_entity.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';

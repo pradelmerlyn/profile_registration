@@ -43,6 +43,7 @@ class RegistrationInitial extends RegistrationState {
    : super(
     currentStep: 1,
     userEntity: const UserEntity(
+      id: 0, 
       firstName: '', 
       lastName: '', 
       birthdate: '', 

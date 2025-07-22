@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/contact_info_view/contact_info_view_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/personal_info_view/personal_info_view_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/registration/registration_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/widgets/pagination_widget.dart';
-import 'package:sprint1_activity/features/widgets/custom_rounded_button.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/contact_info_view/contact_info_view_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/personal_info_view/personal_info_view_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/registration/registration_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/widgets/pagination_widget.dart';
+import 'package:sprint1_activity/presentation/widgets/custom_rounded_button.dart';
 
 import '../views/contact_info_view.dart';
 import '../views/personal_info_view.dart';

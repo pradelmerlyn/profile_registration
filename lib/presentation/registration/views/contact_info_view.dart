@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/contact_info_view/contact_info_view_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/contact_info_view/contact_info_view_bloc.dart';
 
-import '../../../widgets/custom_textformfields.dart';
+import '../../widgets/custom_textformfields.dart';
 import '../widgets/form_step_widget.dart';
 import '../widgets/page_header_widget.dart';
 

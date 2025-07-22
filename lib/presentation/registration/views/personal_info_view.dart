@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/personal_info_view/personal_info_view_bloc.dart';
-import 'package:sprint1_activity/features/widgets/custom_datepickerfield.dart';
-import 'package:sprint1_activity/features/widgets/custom_textformfields.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/personal_info_view/personal_info_view_bloc.dart';
+import 'package:sprint1_activity/presentation/widgets/custom_datepickerfield.dart';
+import 'package:sprint1_activity/presentation/widgets/custom_textformfields.dart';
 
 import '../widgets/form_step_widget.dart';
 import '../widgets/page_header_widget.dart';

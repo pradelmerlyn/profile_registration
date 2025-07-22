@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/features/domain/entities/registration/user_entity.dart';
-import 'package:sprint1_activity/features/presentation/home/screens/home_screen.dart';
-import 'package:sprint1_activity/features/presentation/registration/bloc/registration/registration_bloc.dart';
+import 'package:sprint1_activity/domain/entities/registration/user_entity.dart';
+import 'package:sprint1_activity/presentation/home/screens/home_screen.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/registration/registration_bloc.dart';
 import '../widgets/form_step_widget.dart';
 import '../widgets/page_header_widget.dart';
 
