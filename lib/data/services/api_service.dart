@@ -1,6 +1,6 @@
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import 'package:sprint1_activity/domain/entities/registration/user_entity.dart';
+import 'package:sprint1_activity/domain/model/registration/user_entity.dart';
 
 part 'api_service.g.dart';
 
@@ -8,6 +8,12 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
-  @GET("users/{id}")
-  Future<UserEntity> getUser(@Path("id") int id);
+  @POST("/registerUser")
+  Future<UserEntity> registerUser(@Body() UserEntity user);
+
+  @GET("/getUsers")
+  Future<List<UserEntity>> getUsers();
+
+  @GET("/errorEndpoint")
+  Future<void> triggerError();
 }

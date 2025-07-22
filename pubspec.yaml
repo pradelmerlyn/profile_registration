@@ -54,6 +54,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.3.3
   json_serializable: ^6.6.1
+  retrofit_generator: ^8.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

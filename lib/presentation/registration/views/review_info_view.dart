@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/domain/entities/registration/user_entity.dart';
+import 'package:sprint1_activity/domain/model/registration/user_entity.dart';
 import 'package:sprint1_activity/presentation/home/screens/home_screen.dart';
 import 'package:sprint1_activity/presentation/registration/bloc/registration/registration_bloc.dart';
 import '../widgets/form_step_widget.dart';
@@ -11,14 +11,13 @@ class ReviewInfoView extends StatefulWidget {
   const ReviewInfoView({super.key, required this.tabController});
 
   final TabController tabController;
- 
+
   @override
   State<ReviewInfoView> createState() => _ReviewInfoViewState();
 }
 
 class _ReviewInfoViewState extends State<ReviewInfoView>
     with TickerProviderStateMixin {
-
   ThemeData? _themeData;
 
   @override
@@ -26,6 +25,7 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
     super.didChangeDependencies();
     _themeData = Theme.of(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
@@ -33,7 +33,7 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
         debugPrint('isSuccesful: ${state.isSubmissionSuccess}');
         if (state.isSubmissionSuccess) {
           debugPrint('✅ Submission successful!');
-           showDialog(
+          showDialog(
             context: context,
             barrierDismissible: false,
             builder: (_) => AlertDialog(
@@ -48,7 +48,41 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
                   ),
                   child: const Text('OK'),
                   onPressed: () {
-                    context.read<RegistrationBloc>().add(ResetSubmissionSuccess());
+                    context
+                        .read<RegistrationBloc>()
+                        .add(ResetSubmissionSuccess());
+                    Navigator.of(context).pop(); // close dialog
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const HomeScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => AlertDialog(
+              title: const Text('Error!'),
+              content: Text(
+                state.errorMsg,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: _themeData!.textTheme.labelLarge,
+                  ),
+                  child: const Text('OK'),
+                  onPressed: () {
+                    context
+                        .read<RegistrationBloc>()
+                        .add(ResetSubmissionSuccess());
                     Navigator.of(context).pop(); // close dialog
 
                     Navigator.pushReplacement(
@@ -88,17 +122,23 @@ class _DisplayFormData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    // convert UserEntity to a map so you can iterate
     final data = userData.toJson();
 
     if (kDebugMode) {
       debugPrint('DATA 💘💘 : $data');
     }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ...data.entries.where((e) => e.key != 'bio').map(
+          ...data.entries
+              .where((e) =>
+                  e.key != 'bio' && e.key != 'id') // 🚫 hide bio & id here
+              .map(
                 (e) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
@@ -137,7 +177,7 @@ class _DisplayFormData extends StatelessWidget {
                     text: 'Bio - Describe yourself: ',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: data['bio']),
+                  TextSpan(text: data['bio'] ?? ''),
                 ],
               ),
             ),
@@ -156,4 +196,3 @@ class _DisplayFormData extends StatelessWidget {
         .join(' ');
   }
 }
-

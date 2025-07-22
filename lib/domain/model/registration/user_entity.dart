@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_model.g.dart';
+part 'user_entity.g.dart';
 
 @JsonSerializable()
-class UserModel extends Equatable {
+class UserEntity extends Equatable {
   final int id;
 
   @JsonKey(name: 'firstName')
@@ -25,7 +25,7 @@ class UserModel extends Equatable {
   @JsonKey(name: 'email')
   final String email;
 
-  const UserModel({
+  const UserEntity({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -35,7 +35,7 @@ class UserModel extends Equatable {
     required this.email,
   });
 
-  UserModel copyWith({
+  UserEntity copyWith({
     int? id,
     String? firstName,
     String? lastName,
@@ -44,7 +44,7 @@ class UserModel extends Equatable {
     String? bio,
     String? email,
   }) {
-    return UserModel(
+    return UserEntity(
       id: id ?? this.id,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
@@ -58,8 +58,8 @@ class UserModel extends Equatable {
   @override
   List<Object?> get props => [id, firstName, lastName, birthdate, age, bio, email];
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  Map<String, dynamic> toJson() => _$UserEntityToJson(this);
 }

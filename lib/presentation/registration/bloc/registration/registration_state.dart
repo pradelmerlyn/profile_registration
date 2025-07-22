@@ -4,53 +4,51 @@ class RegistrationState extends Equatable {
   final UserEntity userEntity;
   final int currentStep;
   final bool isSubmissionSuccess;
-  final String error;
+  final bool isLoading;
+  final String errorMsg;
+  final String buttonLabel;
 
-  const RegistrationState(
-    {
-      required this.userEntity,
-      this.currentStep = 0,
-      this.isSubmissionSuccess = false,
-      this.error = ''
-    });
+  const RegistrationState({
+    this.userEntity = const UserEntity(
+        id: 0,
+        firstName: '',
+        lastName: '',
+        birthdate: '',
+        age: 0,
+        bio: '',
+        email: ''),
+    this.currentStep = 1,
+    this.isSubmissionSuccess = false,
+    this.isLoading = false,
+    this.errorMsg = '',
+    this.buttonLabel = 'Next',
+  });
 
   RegistrationState copyWith({
     UserEntity? userEntity,
     int? currentStep,
     bool? isSubmissionSuccess,
-    String? error,
+    bool? isLoading,
+    String? buttonLabel,
+    String? errorMsg,
   }) {
     return RegistrationState(
       userEntity: userEntity ?? this.userEntity,
       currentStep: currentStep ?? this.currentStep,
       isSubmissionSuccess: isSubmissionSuccess ?? this.isSubmissionSuccess,
-      error: error ?? this.error,
+      isLoading: isLoading ?? this.isLoading,
+      buttonLabel: buttonLabel ?? this.buttonLabel,
+      errorMsg: errorMsg ?? this.errorMsg,
     );
   }
 
   @override
   List<Object?> get props => [
-    userEntity,
-    currentStep,
-    isSubmissionSuccess,
-    error,
-  ];
-}
-
-class RegistrationInitial extends RegistrationState {
-   //set the currentStep to 1 for pageHeader UI and set the default initial value of UserEntity
-  const RegistrationInitial()
-   : super(
-    currentStep: 1,
-    userEntity: const UserEntity(
-      id: 0, 
-      firstName: '', 
-      lastName: '', 
-      birthdate: '', 
-      age: 0, 
-      bio: '', 
-      email: ''
-    ),
-  
-  );
+        userEntity,
+        currentStep,
+        isSubmissionSuccess,
+        isLoading,
+        buttonLabel,
+        errorMsg,
+      ];
 }
