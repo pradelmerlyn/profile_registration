@@ -33,4 +33,6 @@ class ContactInfoViewState extends Equatable {
   List<Object?> get props => [obscurePassword, obscureConfirmPassword, emailValue, emailError];
 }
 
-class ContactInfoViewInitial extends ContactInfoViewState {}
+class ContactInfoViewInitial extends ContactInfoViewState {
+  const ContactInfoViewInitial() : super();
+}

@@ -48,6 +48,7 @@ void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
       lastName: event.lastName,
       birthdate: event.birthday,
       age: event.age,
+      email: event.email,
       bio: event.bio,
     );
 
@@ -84,6 +85,7 @@ void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
   Future<void> onGetError(
       GetError event, Emitter<RegistrationState> emit) async {
     String errorMsg = "";
+    emit(state.copyWith(isLoading: true));
     try {
       final errorEndpoint = await apiService.triggerError();
     } on DioException catch (e) {
@@ -97,8 +99,8 @@ void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
     } catch (e) {
       errorMsg = "Unexpected error";
     }
-     emit(state.copyWith(errorMsg: errorMsg));
-    debugPrint('🖥️ DIO ERROR Connection Timeout $errorMsg');
+     emit(state.copyWith(errorMsg: errorMsg, isLoading: false));
+    debugPrint('🖥️ DIO ERROR $errorMsg');
   }
 
 
