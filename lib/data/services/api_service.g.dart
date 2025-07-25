@@ -22,13 +22,13 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<UserEntity> registerUser(UserEntity user) async {
+  Future<UserResponseEntity> registerUser(UserEntity user) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
-    final _options = _setStreamType<UserEntity>(Options(
+    final _options = _setStreamType<UserResponseEntity>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -45,9 +45,9 @@ class _ApiService implements ApiService {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserEntity _value;
+    late UserResponseEntity _value;
     try {
-      _value = UserEntity.fromJson(_result.data!);
+      _value = UserResponseEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -56,12 +56,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<UserEntity>> getUsers() async {
+  Future<UserListResponseEntity> getUsers() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<UserEntity>>(Options(
+    final _options = _setStreamType<UserListResponseEntity>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -77,12 +77,10 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<UserEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UserListResponseEntity _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => UserEntity.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = UserListResponseEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

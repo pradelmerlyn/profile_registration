@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint1_activity/presentation/registration/bloc/registration/registration_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/user_list/user_list_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/screens/user_list_screen.dart';
 import '../../profile/profile_details_screen.dart';
 import '../../registration/screens/registration_screen.dart';
 import '../../widgets/custom_rounded_button.dart';
@@ -85,22 +87,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Center(
-                  child: CustomRoundedButton(
-                    label: 'Register Here!',
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                    create: (context) => RegistrationBloc(),
-                                    child: const RegistrationScreen(),
-                                  )));
-                    },
-                    backgroundColor: _themeData!.colorScheme.primary, // red
-                    foregroundColor:
-                        _themeData!.colorScheme.onPrimary, // white (text/icon)
-                  ),
+                Column(
+                  children: [
+                    Center(
+                      child: CustomRoundedButton(
+                        label: 'Register Here!',
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                        create: (context) => RegistrationBloc(),
+                                        child: const RegistrationScreen(),
+                                      )));
+                        },
+                        backgroundColor: _themeData!.colorScheme.primary, // red
+                        foregroundColor:
+                            _themeData!.colorScheme.onPrimary, // white (text/icon)
+                      ),
+                    ),
+                    const SizedBox(height: 10,),
+                    Center(
+                      child: CustomRoundedButton(
+                        label: 'View Users',
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                        create: (context) => UserListBloc(),
+                                        child: const UserListScreen(),
+                                      ),),);
+                        },
+                        backgroundColor: _themeData!.colorScheme.primary, // red
+                        foregroundColor: _themeData!
+                            .colorScheme.onPrimary, // white (text/icon)
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

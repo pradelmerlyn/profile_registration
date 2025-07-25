@@ -14,6 +14,7 @@ class UpdateUserEvent extends RegistrationEvent {
   final int age;
   final String email;
   final String bio;
+  final String password;
 
   const UpdateUserEvent({
     required this.firstName,
@@ -22,9 +23,10 @@ class UpdateUserEvent extends RegistrationEvent {
     required this.age,
     required this.email,
     required this.bio,
+    required this.password,
   });
   @override
-  List<Object> get props => [firstName, lastName, birthday, age, email, bio];
+  List<Object> get props => [firstName, lastName, birthday, age, email, bio, password];
 }
 
 class NextStepEvent extends RegistrationEvent {
@@ -37,31 +39,27 @@ class PreviousStepEvent extends RegistrationEvent {
   List<Object> get props => [];
 }
 
-class SubmitFormData extends RegistrationEvent {
-  @override
-  List<Object> get props => [];
-}
 
 class ResetSubmissionSuccess extends RegistrationEvent {
   @override
   List<Object> get props => [];
 }
 
-class RegisterUser extends RegistrationEvent {
+class SubmitFormData extends RegistrationEvent {
   final UserEntity user;
 
-  const RegisterUser(this.user);
+  const SubmitFormData(this.user);
 
-  @override
-  List<Object> get props => [user];
-}
-
-class FetchUser extends RegistrationEvent {
   @override
   List<Object> get props => [];
 }
 
 class GetError extends RegistrationEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class ResetErrorMessage extends RegistrationEvent {
   @override
   List<Object> get props => [];
 }
