@@ -154,15 +154,18 @@ class _RegistrationScreen extends State<RegistrationScreen>
                           child: CustomRoundedButton(
                             label: label,
                             onPressed: () {
+                              final ageText = ageController.text.trim();
+                              final age = int.tryParse(ageText) ?? 0;
                               context
                                   .read<RegistrationBloc>()
                                   .add(UpdateUserEvent(
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
                                     birthday: birthdateController.text,
-                                    age: int.tryParse(ageController.text) ?? 0,
+                                    age: age,
                                     email: emailAddressController.text,
                                     bio: bioController.text,
+                                    password: passwordController.text,
                                   ));
 
                               if (currStep == 1) {

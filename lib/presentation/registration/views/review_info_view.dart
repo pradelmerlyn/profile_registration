@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint1_activity/presentation/home/screens/home_screen.dart';
 import 'package:sprint1_activity/presentation/registration/bloc/registration/registration_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/bloc/user_list/user_list_bloc.dart';
+import 'package:sprint1_activity/presentation/registration/screens/user_list_screen.dart';
 import 'package:sprint1_activity/presentation/registration/widgets/form_data_widget.dart';
 import 'package:sprint1_activity/presentation/registration/widgets/loader_widget.dart';
 import '../widgets/form_step_widget.dart';
@@ -30,9 +31,6 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) async {
-        debugPrint('isSuccesful: ${state.isSubmissionSuccess}');
-        debugPrint('isLoading: ${state.isLoading}');
-
         if (state.isLoading) {
           LoaderWidget.show(context);
         } else {
@@ -46,8 +44,20 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
                 content: Text(state.errorMsg),
                 actions: [
                   TextButton(
-                    onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-                    child: const Text('OK'),
+                    onPressed: () {
+                      context.read<RegistrationBloc>().add(ResetErrorMessage());
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.read<RegistrationBloc>().add(ResetErrorMessage());
+                      context
+                          .read<RegistrationBloc>()
+                          .add(SubmitFormData(state.userEntity));
+                    },
+                    child: const Text('Retry'),
                   ),
                 ],
               ),
@@ -55,7 +65,6 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
           }
         }
         if (state.isSubmissionSuccess) {
-          debugPrint('✅ Submission successful!');
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -76,11 +85,16 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
                         .add(ResetSubmissionSuccess());
                     Navigator.of(context).pop(); // close dialog
 
-                    Navigator.pushReplacement(
-                      context,
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (_) => const HomeScreen(),
+                        builder: (_) => BlocProvider(
+                          create: (context) =>
+                              UserListBloc()..add(const FetchUsers()),
+                          child: const UserListScreen(),
+                        ),
                       ),
+                      (Route<dynamic> route) =>
+                          false, // 
                     );
                   },
                 ),
@@ -88,7 +102,6 @@ class _ReviewInfoViewState extends State<ReviewInfoView>
             ),
           );
         }
-        debugPrint('state errorMsg: ${state.errorMsg}');
       },
       child: FormStepWidget(
         content:

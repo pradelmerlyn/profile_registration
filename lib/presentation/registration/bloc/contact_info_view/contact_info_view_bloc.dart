@@ -9,7 +9,7 @@ part 'contact_info_view_state.dart';
 
 class ContactInfoViewBloc
     extends Bloc<ContactInfoViewEvent, ContactInfoViewState> {
-  ContactInfoViewBloc() : super(ContactInfoViewInitial()) {
+  ContactInfoViewBloc() : super(const ContactInfoViewInitial()) {
     on<ShowPasswordEvent>(onShowPassword);
     on<ShowConfirmPasswordEvent>(onShowConfirmPassword);
     on<ValidateEmailEvent>(onValidateEmail);

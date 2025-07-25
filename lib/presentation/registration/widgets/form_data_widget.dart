@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint1_activity/domain/model/registration/user_entity.dart';
 
@@ -14,9 +13,9 @@ class FormDataWidget extends StatelessWidget {
     // convert UserEntity to a map so you can iterate
     final data = userData.toJson();
 
-    if (kDebugMode) {
-      debugPrint('DATA 💘💘 : $data');
-    }
+    // if (kDebugMode) {
+    //   debugPrint('DATA 💘💘 : $data');
+    // }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),

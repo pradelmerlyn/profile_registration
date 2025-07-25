@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,11 +21,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<UpdateUserEvent>(onUpdateUser);
     on<SubmitFormData>(onSubmitRegistration);
     on<ResetSubmissionSuccess>(onResetSubmissionSuccess);
-    on<FetchUser>(onFetchUser);
     on<GetError>(onGetError);
+    on<ResetErrorMessage>(onResetErrorMessage);
   }
 
-void onNextStep(NextStepEvent event, Emitter<RegistrationState> emit) {
+  void onNextStep(NextStepEvent event, Emitter<RegistrationState> emit) {
     final nextStep = (state.currentStep + 1);
 
     emit(state.copyWith(
@@ -42,7 +44,7 @@ void onNextStep(NextStepEvent event, Emitter<RegistrationState> emit) {
     ));
   }
 
-void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
+  void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
     final updatedUser = state.userEntity.copyWith(
       firstName: event.firstName,
       lastName: event.lastName,
@@ -50,36 +52,30 @@ void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
       age: event.age,
       email: event.email,
       bio: event.bio,
+      password: event.password,
     );
 
     emit(state.copyWith(userEntity: updatedUser));
   }
 
-  void onSubmitRegistration(
+  Future<void> onSubmitRegistration(
       SubmitFormData event, Emitter<RegistrationState> emit) async {
-    emit(state.copyWith(isSubmissionSuccess: true));
+    try {
+      final user = state.userEntity;
+      debugPrint('💁💁 USER $user ');
+      await apiService.registerUser(user);
+      emit(state.copyWith(isSubmissionSuccess: true));
+    } catch (e, stackTrace) {
+      log(stackTrace.toString());
+      emit(state.copyWith(errorMsg: e.toString(), isLoading: false));
+    }
   }
 
   void onResetSubmissionSuccess(
       ResetSubmissionSuccess event, Emitter<RegistrationState> emit) async {
     final isSubmissionReset = state.copyWith(isSubmissionSuccess: false);
     emit(isSubmissionReset);
-    debugPrint('❌ Submission Success is ${state.isSubmissionSuccess} ');
-  }
-
-  // Future<void> onRegisterUser(
-  //     RegisterUser event, Emitter<RegistrationState> emit) async {
-  //   try {
-  //     final user = await apiService.registerUser(event.user);
-  //     debugPrint('💁💁 USER $user ');
-  //   } catch (e) {
-  //     emit(RegistrationFailure(e.toString()));
-  //   }
-  // }
-
-  Future<void> onFetchUser(
-      FetchUser event, Emitter<RegistrationState> emit) async {
-    emit(state.copyWith(isLoading: true));
+    // debugPrint('❌ Submission Success is ${state.isSubmissionSuccess} ');
   }
 
   Future<void> onGetError(
@@ -87,22 +83,26 @@ void onUpdateUser(UpdateUserEvent event, Emitter<RegistrationState> emit) {
     String errorMsg = "";
     emit(state.copyWith(isLoading: true));
     try {
-      final errorEndpoint = await apiService.triggerError();
+      await apiService.triggerError();
     } on DioException catch (e) {
       //DIO error is depreciated
       if (e.type == DioExceptionType.connectionTimeout) {
         errorMsg = "Connection timeout";
-       
       } else {
         errorMsg = "Something went wrong";
       }
     } catch (e) {
       errorMsg = "Unexpected error";
     }
-     emit(state.copyWith(errorMsg: errorMsg, isLoading: false));
+    emit(state.copyWith(errorMsg: errorMsg, isLoading: false));
     debugPrint('🖥️ DIO ERROR $errorMsg');
   }
 
+  void onResetErrorMessage(
+      ResetErrorMessage event, Emitter<RegistrationState> emit) {
+    emit(state.copyWith(errorMsg: ""));
+    // debugPrint('onResetErrorMessage $state');
+  }
 
   String _getButtonLabel(int step) {
     switch (step) {

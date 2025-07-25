@@ -5,7 +5,7 @@ part 'user_entity.g.dart';
 
 @JsonSerializable()
 class UserEntity extends Equatable {
-  final int id;
+  final int? id;
 
   @JsonKey(name: 'firstName')
   final String firstName;
@@ -17,13 +17,16 @@ class UserEntity extends Equatable {
   final String birthdate;
 
   @JsonKey(name: 'age')
-  final int age;
+  final int? age;
 
   @JsonKey(name: 'bio')
   final String bio;
 
   @JsonKey(name: 'email')
   final String email;
+
+  @JsonKey(name: 'password')
+  final String password;
 
   const UserEntity({
     required this.id,
@@ -33,6 +36,7 @@ class UserEntity extends Equatable {
     required this.age,
     required this.bio,
     required this.email,
+    required this.password,
   });
 
   UserEntity copyWith({
@@ -43,6 +47,7 @@ class UserEntity extends Equatable {
     int? age,
     String? bio,
     String? email,
+    String? password,
   }) {
     return UserEntity(
       id: id ?? this.id,
@@ -52,11 +57,12 @@ class UserEntity extends Equatable {
       age: age ?? this.age,
       bio: bio ?? this.bio,
       email: email ?? this.email,
+      password: password ?? this.password,
     );
   }
 
   @override
-  List<Object?> get props => [id, firstName, lastName, birthdate, age, bio, email];
+  List<Object?> get props => [id, firstName, lastName, birthdate, age, bio, email, password];
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
       _$UserEntityFromJson(json);
