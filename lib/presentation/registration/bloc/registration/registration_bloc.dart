@@ -73,7 +73,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   void onResetSubmissionSuccess(
       ResetSubmissionSuccess event, Emitter<RegistrationState> emit) async {
-    final isSubmissionReset = state.copyWith(isSubmissionSuccess: false);
+    final isSubmissionReset = state.copyWith(isSubmissionSuccess: false, isLoading: false);
     emit(isSubmissionReset);
     // debugPrint('❌ Submission Success is ${state.isSubmissionSuccess} ');
   }
