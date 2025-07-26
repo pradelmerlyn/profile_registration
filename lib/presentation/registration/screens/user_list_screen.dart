@@ -46,8 +46,6 @@ class _UserListScreenState extends State<UserListScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text('No users found.'),
-                  SizedBox(height: 8),
-                  Text('User List Screen'),
                 ],
               ),
             );

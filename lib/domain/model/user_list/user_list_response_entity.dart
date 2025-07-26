@@ -6,9 +6,32 @@ part 'user_list_response_entity.g.dart';
 
 @JsonSerializable()
 class UserListResponseEntity extends Equatable {
-  final List<UserEntity> users;
+  @JsonKey(name: 'status')
+  final String? status;
 
-  const UserListResponseEntity({required this.users});
+  @JsonKey(name: 'message')
+  final String? message;
+
+  final List<UserEntity>? users;
+
+  const UserListResponseEntity({
+    this.status,
+    this.message,
+    this.users,
+  });
+
+    UserListResponseEntity copyWith({
+    String? status,
+    String? message,
+    List<UserEntity>? users,
+  }) {
+    return UserListResponseEntity(
+      status: status ?? this.status,
+      message: message ?? this.message,
+      users: users ?? this.users,
+    );
+  }
+
 
   factory UserListResponseEntity.fromJson(Map<String, dynamic> json) =>
       _$UserListResponseEntityFromJson(json);
@@ -16,5 +39,5 @@ class UserListResponseEntity extends Equatable {
   Map<String, dynamic> toJson() => _$UserListResponseEntityToJson(this);
 
   @override
-  List<Object?> get props => [users];
+  List<Object?> get props => [status, message, users];
 }
